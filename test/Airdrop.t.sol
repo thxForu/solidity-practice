@@ -5,7 +5,7 @@ import "forge-std/Test.sol";
 import "../src/Airdrop/Airdrop.sol";
 import "../src/TestToken.sol";
 import {Merkle} from "lib/murky/src/Merkle.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol"; 
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "forge-std/console2.sol";
 
 contract AirdropTest is Test, Merkle, IAirdrop {
@@ -16,9 +16,9 @@ contract AirdropTest is Test, Merkle, IAirdrop {
     address bob = address(0x234);
     bytes32 root;
     uint256 USER_LIMIT = 5;
-    uint256 TOKEN_LIMIT_PER_USER = 1000 * 10**18;
+    uint256 TOKEN_LIMIT_PER_USER = 1000 * 10 ** 18;
 
-    bytes32[] leafs; 
+    bytes32[] leafs;
 
     function setUp() public {
         token = new TestToken();
@@ -29,7 +29,7 @@ contract AirdropTest is Test, Merkle, IAirdrop {
 
         airdrop = new Airdrop(IERC20(address(token)), USER_LIMIT, TOKEN_LIMIT_PER_USER, root);
 
-        token.mint(address(airdrop), 5000 * 10**18);
+        token.mint(address(airdrop), 5000 * 10 ** 18);
     }
 
     function testClaimTokens() public {
@@ -37,9 +37,9 @@ contract AirdropTest is Test, Merkle, IAirdrop {
         bytes32[] memory proof = getProof(leafs, aliceIndex);
 
         vm.prank(alice);
-        airdrop.claim(1000 * 10**18, proof);
+        airdrop.claim(1000 * 10 ** 18, proof);
 
-        assertEq(token.balanceOf(alice), 1000 * 10**18);
+        assertEq(token.balanceOf(alice), 1000 * 10 ** 18);
     }
 
     function testOnlyOneClaimTokens() public {
@@ -47,25 +47,25 @@ contract AirdropTest is Test, Merkle, IAirdrop {
         bytes32[] memory proof = getProof(leafs, aliceIndex);
 
         vm.prank(alice);
-        airdrop.claim(1000 * 10**18, proof);
+        airdrop.claim(1000 * 10 ** 18, proof);
 
-        assertEq(token.balanceOf(alice), 1000 * 10**18);
+        assertEq(token.balanceOf(alice), 1000 * 10 ** 18);
 
         vm.prank(alice);
         vm.expectRevert(AlreadyClaimed.selector);
-        airdrop.claim(1000 * 10**18, proof);
+        airdrop.claim(1000 * 10 ** 18, proof);
 
-        assertEq(token.balanceOf(alice), 1000 * 10**18);
+        assertEq(token.balanceOf(alice), 1000 * 10 ** 18);
     }
-    
+
     function testClaimByNonWhitelisted() public {
         address notWhitelisted = address(0x999);
         bytes32[] memory proof = getProof(leafs, 1);
-        
+
         vm.expectRevert(InvalidUser.selector);
         vm.prank(notWhitelisted);
 
-        airdrop.claim(1000 * 10**18, proof);
+        airdrop.claim(1000 * 10 ** 18, proof);
     }
 
     function testClaimWithInvalidProof() public {
@@ -74,6 +74,6 @@ contract AirdropTest is Test, Merkle, IAirdrop {
         vm.expectRevert(InvalidUser.selector);
         vm.prank(bob);
 
-        airdrop.claim(1000 * 10**18, proof);
+        airdrop.claim(1000 * 10 ** 18, proof);
     }
 }
