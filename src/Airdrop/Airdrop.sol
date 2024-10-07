@@ -8,6 +8,7 @@ import {IAirdrop} from "src/interfaces/Airdrop/IAirdrop.sol";
 
 contract Airdrop is IAirdrop {
     using SafeERC20 for IERC20;
+
     IERC20 public token;
 
     bytes32 public immutable ROOT;
