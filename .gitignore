@@ -12,10 +12,6 @@ docs/
 
 # Dotenv file
 .env
-/src/artifacts
-/src/interfaces/Airdrop/artifacts
-/test/artifacts
-/node_modules
-
 /.deps
-/src/Airdrop/artifacts
+/node_modules
+/**/artifacts

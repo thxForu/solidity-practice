@@ -4,7 +4,7 @@ pragma solidity ^0.8.26;
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
-import {IAirdrop} from "src/interfaces/Airdrop/IAirdrop.sol";
+import {IAirdrop} from "./interfaces/IAirdrop.sol";
 
 contract Airdrop is IAirdrop {
     using SafeERC20 for IERC20;
