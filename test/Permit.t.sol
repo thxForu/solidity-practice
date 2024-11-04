@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 contract Permit is Test {
     PermitToken token;
-    address owner;
+    address tokenOwner;
     address recipient;
 
     uint256 recipientPrivateKey;
@@ -22,12 +22,12 @@ contract Permit is Test {
         ownerPrivateKey = 0xA11CE;
         recipientPrivateKey = 0xB0B;
 
-        owner = vm.addr(ownerPrivateKey);
-        vm.prank(owner);
+        tokenOwner = vm.addr(ownerPrivateKey);
+        vm.prank(tokenOwner);
         token = new PermitToken();
 
         recipient = vm.addr(recipientPrivateKey);
-        deal(owner, 1 ether);
+        deal(tokenOwner, 1 ether);
     }
 
     function testTransferWithPermit() public {
@@ -35,15 +35,15 @@ contract Permit is Test {
         uint256 deadline = block.timestamp + 1 days;
 
         (uint8 v, bytes32 r, bytes32 s) =
-            _createPermitSignature(owner, recipient, amount, token.nonces(owner), deadline);
+            _createPermitSignature(tokenOwner, recipient, amount, token.nonces(tokenOwner), deadline);
 
-        uint256 initialOwnerBalance = token.balanceOf(owner);
+        uint256 initialOwnerBalance = token.balanceOf(tokenOwner);
         uint256 initialRecipientBalance = token.balanceOf(recipient);
 
-        vm.prank(owner);
+        vm.prank(tokenOwner);
         token.transferWithPermit(recipient, amount, deadline, v, r, s);
 
-        assertEq(token.balanceOf(owner), initialOwnerBalance - amount, "Owner balance not decreased correctly");
+        assertEq(token.balanceOf(tokenOwner), initialOwnerBalance - amount, "Owner balance not decreased correctly");
         assertEq(
             token.balanceOf(recipient), initialRecipientBalance + amount, "Recipient balance not increased correctly"
         );
@@ -54,13 +54,13 @@ contract Permit is Test {
         uint256 deadline = block.timestamp + 1 days;
 
         (uint8 v, bytes32 r, bytes32 s) =
-            _createPermitSignature(owner, recipient, amount, token.nonces(owner), deadline);
+            _createPermitSignature(tokenOwner, recipient, amount, token.nonces(tokenOwner), deadline);
 
         // expire deadline
         vm.warp(block.timestamp + 2 days);
         vm.expectRevert();
 
-        vm.prank(owner);
+        vm.prank(tokenOwner);
         token.transferWithPermit(recipient, amount, deadline, v, r, s);
     }
 
