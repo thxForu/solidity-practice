@@ -15,7 +15,6 @@ contract StorageOptimizationTest is Test {
         storage_ = new StorageOptimization();
     }
 
-
     function testGasFirstUpdate() public {
         uint256 startGas = gasleft();
         storage_.updateBalance(USER1, 100);
