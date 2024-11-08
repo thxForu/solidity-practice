@@ -11,7 +11,7 @@ contract ProxyTest is Test {
     ImplementationV2 implementationV2;
     Proxy proxy;
     address user;
-    
+
     function setUp() public {
         implementation = new Implementation(100);
         proxy = new Proxy(address(implementation));
@@ -25,22 +25,22 @@ contract ProxyTest is Test {
 
         // set value in proxy storage
         Implementation(address(proxy)).setUserAccess(user, true);
-        
+
         proxy.upgradeImplementation(address(implementationV2));
-        
+
         // сonstant and immutable values should change because they are in bytecode
         assertEq(ImplementationV2(address(proxy)).getConstant(), "constant_v2");
         assertEq(ImplementationV2(address(proxy)).immutableValue(), 200);
-        
-        // storage value should be the same becouse it's stored in proxy 
+
+        // storage value should be the same becouse it's stored in proxy
         assertTrue(ImplementationV2(address(proxy)).userAccess(user));
     }
 
     function testStorageConsistency() public {
         Implementation(address(proxy)).setUserAccess(user, true);
-        
+
         proxy.upgradeImplementation(address(implementationV2));
-        
+
         assertTrue(ImplementationV2(address(proxy)).userAccess(user));
     }
 }

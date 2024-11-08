@@ -15,7 +15,7 @@ contract TransparentTokenV2 is ERC20Upgradeable, ReentrancyGuardUpgradeable, Own
     }
 
     function initialize() public reinitializer(2) {
-        maxSupply = 1000000 * 10**18;
+        maxSupply = 1000000 * 10 ** 18;
     }
 
     function mint(address to, uint256 amount) public onlyOwner nonReentrant {

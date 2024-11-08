@@ -17,17 +17,13 @@ contract ProxyTest is Test {
 
     function setUp() public {
         implementationV1 = new LogicV1();
-        
+
         proxyAdmin = new ProxyAdmin(address(this));
-        
+
         bytes memory initData = abi.encodeWithSelector(LogicV1.initialize.selector);
-        
-        proxy = new MyProxy(
-            address(implementationV1),
-            address(proxyAdmin),
-            initData
-        );
-        
+
+        proxy = new MyProxy(address(implementationV1), address(proxyAdmin), initData);
+
         wrappedProxyV1 = LogicV1(address(proxy));
     }
 

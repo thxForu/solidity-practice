@@ -6,12 +6,12 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 contract LogicV2 is Initializable {
     uint256 public value;
 
-   /// @custom:oz-upgrades-unsafe-allow constructor
+    /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
-    
-    function initialize() initializer public {
+
+    function initialize() public initializer {
         value = 100;
     }
 
