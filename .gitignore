@@ -16,3 +16,4 @@ docs/
 /node_modules
 /**/artifacts
 .states/vm-cancun/state.json
+/test-ledger
