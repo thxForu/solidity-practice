@@ -11,12 +11,12 @@ contract YulStorageTest is Test {
         yulStorage = new YulStorage();
     }
 
-        function testSetAndGetBytes15() public {
+    function testSetAndGetBytes15() public {
         bytes15 testData = bytes15(hex"01234567890abcde");
-        
+
         yulStorage.setBytes15(testData);
         bytes15 retrievedData = yulStorage.getBytes15();
-        
+
         assertEq(retrievedData, testData);
     }
 
